@@ -1,5 +1,6 @@
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Alert, KeyboardAvoidingView, Platform, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { clearError, loginUser } from "src/store/authSlice";
 import { useAppDispatch, useAppSelector } from "src/store/hooks";
@@ -17,25 +18,26 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
   const [password, setPassword] = useState("");
   const dispatch = useAppDispatch();
   const { isLoading, error } = useAppSelector((state) => state.auth);
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (error) {
-      Alert.alert("Error", error);
+      Alert.alert(t("common.error"), error);
       dispatch(clearError());
     }
-  }, [error, dispatch]);
+  }, [error, dispatch, t]);
 
   const handleLogin = useCallback(async () => {
     if (!email || !password) {
-      Alert.alert("Error", "Please fill in all fields");
+      Alert.alert(t("common.error"), t("auth.fillAllFields"));
       return;
     }
 
     const result = await dispatch(loginUser({ email, password }));
     if (loginUser.fulfilled.match(result)) {
-      Alert.alert("Success", "Login successful!");
+      Alert.alert(t("common.success"), t("auth.loginSuccessful"));
     }
-  }, [email, password, dispatch]);
+  }, [email, password, dispatch, t]);
 
   const handleNavigateToRegister = useCallback(() => {
     navigation.navigate("Register");
@@ -46,18 +48,18 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
   }, [isLoading]);
 
   const buttonText = useMemo(() => {
-    return isLoading ? "Signing In..." : "Sign In";
-  }, [isLoading]);
+    return isLoading ? t("auth.signingIn") : t("auth.signIn");
+  }, [isLoading, t]);
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === "ios" ? "padding" : "height"}>
       <View style={styles.centeredContent}>
-        <Text style={styles.title}>Health Environment Tracker</Text>
-        <Text style={styles.subtitle}>Sign in to your account</Text>
+        <Text style={styles.title}>{t("app.title")}</Text>
+        <Text style={styles.subtitle}>{t("app.signInToAccount")}</Text>
 
         <TextInput
           style={styles.input}
-          placeholder="Email"
+          placeholder={t("auth.email")}
           value={email}
           onChangeText={setEmail}
           keyboardType="email-address"
@@ -66,7 +68,7 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
 
         <TextInput
           style={styles.input}
-          placeholder="Password"
+          placeholder={t("auth.password")}
           value={password}
           onChangeText={setPassword}
           secureTextEntry
@@ -77,7 +79,7 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.linkButton} onPress={handleNavigateToRegister}>
-          <Text style={styles.linkText}>Don&apos;t have an account? Sign up</Text>
+          <Text style={styles.linkText}>{t("auth.dontHaveAccount")}</Text>
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>

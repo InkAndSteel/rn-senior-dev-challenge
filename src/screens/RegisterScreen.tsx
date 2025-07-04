@@ -1,5 +1,6 @@
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Alert, KeyboardAvoidingView, Platform, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { clearError, registerUser } from "src/store/authSlice";
 import { useAppDispatch, useAppSelector } from "src/store/hooks";
@@ -18,13 +19,14 @@ export const RegisterScreen: React.FC<Props> = ({ navigation }) => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const dispatch = useAppDispatch();
   const { isLoading, error } = useAppSelector((state) => state.auth);
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (error) {
-      Alert.alert("Error", error);
+      Alert.alert(t("common.error"), error);
       dispatch(clearError());
     }
-  }, [error, dispatch]);
+  }, [error, dispatch, t]);
 
   const handleNavigateToLogin = useCallback(() => {
     navigation.navigate("Login");
@@ -32,43 +34,45 @@ export const RegisterScreen: React.FC<Props> = ({ navigation }) => {
 
   const handleRegister = useCallback(async () => {
     if (!email || !password || !confirmPassword) {
-      Alert.alert("Error", "Please fill in all fields");
+      Alert.alert(t("common.error"), t("auth.fillAllFields"));
       return;
     }
 
     if (password !== confirmPassword) {
-      Alert.alert("Error", "Passwords do not match");
+      Alert.alert(t("common.error"), t("auth.passwordsDoNotMatch"));
       return;
     }
 
     if (password.length < 6) {
-      Alert.alert("Error", "Password must be at least 6 characters");
+      Alert.alert(t("common.error"), t("auth.passwordTooShort"));
       return;
     }
 
     const result = await dispatch(registerUser({ email, password }));
     if (registerUser.fulfilled.match(result)) {
-      Alert.alert("Success", "Account created successfully!", [{ text: "OK", onPress: handleNavigateToLogin }]);
+      Alert.alert(t("common.success"), t("auth.accountCreatedSuccessfully"), [
+        { text: t("common.ok"), onPress: handleNavigateToLogin }
+      ]);
     }
-  }, [email, password, confirmPassword, dispatch, handleNavigateToLogin]);
+  }, [email, password, confirmPassword, dispatch, handleNavigateToLogin, t]);
 
   const buttonStyle = useMemo(() => {
     return isLoading ? styles.buttonDisabled : styles.button;
   }, [isLoading]);
 
   const buttonText = useMemo(() => {
-    return isLoading ? "Creating Account..." : "Create Account";
-  }, [isLoading]);
+    return isLoading ? t("auth.creatingAccount") : t("app.createAccount");
+  }, [isLoading, t]);
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === "ios" ? "padding" : "height"}>
       <View style={styles.centeredContent}>
-        <Text style={styles.title}>Create Account</Text>
-        <Text style={styles.subtitle}>Join Health Environment Tracker</Text>
+        <Text style={styles.title}>{t("app.createAccount")}</Text>
+        <Text style={styles.subtitle}>{t("app.joinApp")}</Text>
 
         <TextInput
           style={styles.input}
-          placeholder="Email"
+          placeholder={t("auth.email")}
           value={email}
           onChangeText={setEmail}
           keyboardType="email-address"
@@ -77,7 +81,7 @@ export const RegisterScreen: React.FC<Props> = ({ navigation }) => {
 
         <TextInput
           style={styles.input}
-          placeholder="Password"
+          placeholder={t("auth.password")}
           value={password}
           onChangeText={setPassword}
           secureTextEntry
@@ -85,7 +89,7 @@ export const RegisterScreen: React.FC<Props> = ({ navigation }) => {
 
         <TextInput
           style={styles.input}
-          placeholder="Confirm Password"
+          placeholder={t("auth.confirmPassword")}
           value={confirmPassword}
           onChangeText={setConfirmPassword}
           secureTextEntry
@@ -96,7 +100,7 @@ export const RegisterScreen: React.FC<Props> = ({ navigation }) => {
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.linkButton} onPress={handleNavigateToLogin}>
-          <Text style={styles.linkText}>Already have an account? Sign in</Text>
+          <Text style={styles.linkText}>{t("auth.alreadyHaveAccount")}</Text>
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>

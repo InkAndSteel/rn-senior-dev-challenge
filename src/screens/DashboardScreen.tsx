@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { RefreshControl, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { CITIES } from "src/api/weatherTypes";
@@ -11,6 +12,7 @@ import { styles } from "src/theme";
 export const DashboardScreen: React.FC = () => {
   const dispatch = useAppDispatch();
   const { cities, isLoading, error } = useAppSelector((state) => state.weather);
+  const { t } = useTranslation();
 
   useEffect(() => {
     dispatch(fetchAllCitiesWeather());
@@ -52,36 +54,36 @@ export const DashboardScreen: React.FC = () => {
 
   const activityRecommendationText = useMemo(() => {
     return Object.keys(cities).length > 0
-      ? "Based on current weather conditions, consider indoor activities during extreme temperatures and outdoor activities during pleasant weather."
-      : "Recommendations will be generated based on weather conditions.";
-  }, [cities]);
+      ? t("dashboard.activityRecommendationsText")
+      : t("dashboard.activityRecommendationsDefault");
+  }, [cities, t]);
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Weather Dashboard</Text>
+        <Text style={styles.headerTitle}>{t("dashboard.title")}</Text>
       </View>
 
       <ScrollView style={styles.content} refreshControl={refreshControl}>
         <View style={styles.placeholder}>
-          <Text style={styles.placeholderText}>Welcome to Health Environment Tracker!</Text>
-          <Text style={styles.placeholderSubtext}>Current weather conditions for major cities worldwide.</Text>
+          <Text style={styles.placeholderText}>{t("dashboard.welcome")}</Text>
+          <Text style={styles.placeholderSubtext}>{t("dashboard.subtitle")}</Text>
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Current Weather</Text>
+          <Text style={styles.sectionTitle}>{t("dashboard.currentWeather")}</Text>
           <View style={styles.weatherGrid}>{renderWeatherCards()}</View>
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Activity Recommendations</Text>
+          <Text style={styles.sectionTitle}>{t("dashboard.activityRecommendations")}</Text>
           <View style={styles.card}>
             <Text style={styles.bodyText}>{activityRecommendationText}</Text>
           </View>
         </View>
 
         <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
-          <Text style={styles.logoutText}>Logout</Text>
+          <Text style={styles.logoutText}>{t("dashboard.logout")}</Text>
         </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>

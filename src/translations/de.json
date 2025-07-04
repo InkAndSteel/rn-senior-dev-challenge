@@ -1,0 +1,56 @@
+{
+  "common": {
+    "loading": "Laden...",
+    "error": "Fehler",
+    "success": "Erfolgreich",
+    "ok": "OK",
+    "cancel": "Abbrechen",
+    "retry": "Wiederholen"
+  },
+  "auth": {
+    "signIn": "Anmelden",
+    "signUp": "Registrieren",
+    "signingIn": "Anmelden...",
+    "creatingAccount": "Konto wird erstellt...",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "confirmPassword": "Passwort bestätigen",
+    "forgotPassword": "Passwort vergessen?",
+    "dontHaveAccount": "Noch kein Konto? Registrieren",
+    "alreadyHaveAccount": "Bereits ein Konto? Anmelden",
+    "loginSuccessful": "Anmeldung erfolgreich!",
+    "accountCreatedSuccessfully": "Konto erfolgreich erstellt!",
+    "fillAllFields": "Bitte füllen Sie alle Felder aus",
+    "passwordsDoNotMatch": "Passwörter stimmen nicht überein",
+    "passwordTooShort": "Passwort muss mindestens 6 Zeichen lang sein",
+    "emailAlreadyExists": "E-Mail bereits vorhanden",
+    "invalidCredentials": "Ungültige E-Mail oder Passwort",
+    "loginFailed": "Anmeldung fehlgeschlagen. Bitte versuchen Sie es erneut.",
+    "registrationFailed": "Konto konnte nicht erstellt werden. Bitte versuchen Sie es erneut."
+  },
+  "dashboard": {
+    "title": "Wetter-Dashboard",
+    "welcome": "Willkommen bei Health Environment Tracker!",
+    "subtitle": "Aktuelle Wetterbedingungen für Großstädte weltweit.",
+    "currentWeather": "Aktuelles Wetter",
+    "activityRecommendations": "Aktivitätsempfehlungen",
+    "activityRecommendationsText": "Basierend auf den aktuellen Wetterbedingungen sollten Sie bei extremen Temperaturen Aktivitäten drinnen und bei angenehmem Wetter Aktivitäten draußen in Betracht ziehen.",
+    "activityRecommendationsDefault": "Empfehlungen werden basierend auf den Wetterbedingungen generiert.",
+    "logout": "Abmelden"
+  },
+  "weather": {
+    "loadingWeatherData": "Wetterdaten werden geladen...",
+    "feelsLike": "Gefühlt wie",
+    "humidity": "Luftfeuchtigkeit",
+    "wind": "Wind",
+    "updated": "Aktualisiert",
+    "weatherError": "Wetterfehler",
+    "failedToFetch": "Wetterdaten konnten nicht abgerufen werden"
+  },
+  "app": {
+    "title": "Health Environment Tracker",
+    "signInToAccount": "Bei Ihrem Konto anmelden",
+    "createAccount": "Konto erstellen",
+    "joinApp": "Health Environment Tracker beitreten"
+  }
+}

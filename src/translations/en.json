@@ -1,0 +1,56 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "ok": "OK",
+    "cancel": "Cancel",
+    "retry": "Retry"
+  },
+  "auth": {
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "signingIn": "Signing In...",
+    "creatingAccount": "Creating Account...",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "forgotPassword": "Forgot Password?",
+    "dontHaveAccount": "Don't have an account? Sign up",
+    "alreadyHaveAccount": "Already have an account? Sign in",
+    "loginSuccessful": "Login successful!",
+    "accountCreatedSuccessfully": "Account created successfully!",
+    "fillAllFields": "Please fill in all fields",
+    "passwordsDoNotMatch": "Passwords do not match",
+    "passwordTooShort": "Password must be at least 6 characters",
+    "emailAlreadyExists": "Email already exists",
+    "invalidCredentials": "Invalid email or password",
+    "loginFailed": "Login failed. Please try again.",
+    "registrationFailed": "Failed to create account. Please try again."
+  },
+  "dashboard": {
+    "title": "Weather Dashboard",
+    "welcome": "Welcome to Health Environment Tracker!",
+    "subtitle": "Current weather conditions for major cities worldwide.",
+    "currentWeather": "Current Weather",
+    "activityRecommendations": "Activity Recommendations",
+    "activityRecommendationsText": "Based on current weather conditions, consider indoor activities during extreme temperatures and outdoor activities during pleasant weather.",
+    "activityRecommendationsDefault": "Recommendations will be generated based on weather conditions.",
+    "logout": "Logout"
+  },
+  "weather": {
+    "loadingWeatherData": "Loading weather data...",
+    "feelsLike": "Feels like",
+    "humidity": "Humidity",
+    "wind": "Wind",
+    "updated": "Updated",
+    "weatherError": "Weather Error",
+    "failedToFetch": "Failed to fetch weather data"
+  },
+  "app": {
+    "title": "Health Environment Tracker",
+    "signInToAccount": "Sign in to your account",
+    "createAccount": "Create Account",
+    "joinApp": "Join Health Environment Tracker"
+  }
+}
