@@ -1,6 +1,7 @@
+import Constants from "expo-constants";
 import { WeatherApiResponse } from "./weatherTypes";
 
-const API_KEY = "fa6ba1cc021d3b189446395bcb0b68dd";
+const API_KEY = Constants.expoConfig?.extra?.EXPO_PUBLIC_WEATHER_API_KEY || process.env.EXPO_PUBLIC_WEATHER_API_KEY;
 const BASE_URL = "https://api.openweathermap.org/data/2.5/weather";
 
 export const weatherApi = {
