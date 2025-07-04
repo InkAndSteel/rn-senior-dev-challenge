@@ -1,14 +1,6 @@
 import { StackNavigationProp } from "@react-navigation/stack";
-import { useEffect, useState } from "react";
-import {
-  Alert,
-  KeyboardAvoidingView,
-  Platform,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View
-} from "react-native";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { Alert, KeyboardAvoidingView, Platform, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { clearError, registerUser } from "src/store/authSlice";
 import { useAppDispatch, useAppSelector } from "src/store/hooks";
 import { styles } from "src/theme";
@@ -34,7 +26,11 @@ export const RegisterScreen: React.FC<Props> = ({ navigation }) => {
     }
   }, [error, dispatch]);
 
-  const handleRegister = async () => {
+  const handleNavigateToLogin = useCallback(() => {
+    navigation.navigate("Login");
+  }, [navigation]);
+
+  const handleRegister = useCallback(async () => {
     if (!email || !password || !confirmPassword) {
       Alert.alert("Error", "Please fill in all fields");
       return;
@@ -52,11 +48,17 @@ export const RegisterScreen: React.FC<Props> = ({ navigation }) => {
 
     const result = await dispatch(registerUser({ email, password }));
     if (registerUser.fulfilled.match(result)) {
-      Alert.alert("Success", "Account created successfully!", [
-        { text: "OK", onPress: () => navigation.navigate("Login") }
-      ]);
+      Alert.alert("Success", "Account created successfully!", [{ text: "OK", onPress: handleNavigateToLogin }]);
     }
-  };
+  }, [email, password, confirmPassword, dispatch, handleNavigateToLogin]);
+
+  const buttonStyle = useMemo(() => {
+    return isLoading ? styles.buttonDisabled : styles.button;
+  }, [isLoading]);
+
+  const buttonText = useMemo(() => {
+    return isLoading ? "Creating Account..." : "Create Account";
+  }, [isLoading]);
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === "ios" ? "padding" : "height"}>
@@ -89,19 +91,14 @@ export const RegisterScreen: React.FC<Props> = ({ navigation }) => {
           secureTextEntry
         />
 
-        <TouchableOpacity 
-          style={isLoading ? styles.buttonDisabled : styles.button} 
-          onPress={handleRegister} 
-          disabled={isLoading}
-        >
-          <Text style={styles.buttonText}>{isLoading ? "Creating Account..." : "Create Account"}</Text>
+        <TouchableOpacity style={buttonStyle} onPress={handleRegister} disabled={isLoading}>
+          <Text style={styles.buttonText}>{buttonText}</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.linkButton} onPress={() => navigation.navigate("Login")}>
+        <TouchableOpacity style={styles.linkButton} onPress={handleNavigateToLogin}>
           <Text style={styles.linkText}>Already have an account? Sign in</Text>
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
   );
 };
-

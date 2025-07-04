@@ -1,14 +1,6 @@
 import { StackNavigationProp } from "@react-navigation/stack";
-import { useEffect, useState } from "react";
-import {
-  Alert,
-  KeyboardAvoidingView,
-  Platform,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View
-} from "react-native";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { Alert, KeyboardAvoidingView, Platform, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { clearError, loginUser } from "src/store/authSlice";
 import { useAppDispatch, useAppSelector } from "src/store/hooks";
 import { styles } from "src/theme";
@@ -33,7 +25,7 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
     }
   }, [error, dispatch]);
 
-  const handleLogin = async () => {
+  const handleLogin = useCallback(async () => {
     if (!email || !password) {
       Alert.alert("Error", "Please fill in all fields");
       return;
@@ -43,7 +35,19 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
     if (loginUser.fulfilled.match(result)) {
       Alert.alert("Success", "Login successful!");
     }
-  };
+  }, [email, password, dispatch]);
+
+  const handleNavigateToRegister = useCallback(() => {
+    navigation.navigate("Register");
+  }, [navigation]);
+
+  const buttonStyle = useMemo(() => {
+    return isLoading ? styles.buttonDisabled : styles.button;
+  }, [isLoading]);
+
+  const buttonText = useMemo(() => {
+    return isLoading ? "Signing In..." : "Sign In";
+  }, [isLoading]);
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === "ios" ? "padding" : "height"}>
@@ -68,19 +72,14 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
           secureTextEntry
         />
 
-        <TouchableOpacity 
-          style={isLoading ? styles.buttonDisabled : styles.button} 
-          onPress={handleLogin} 
-          disabled={isLoading}
-        >
-          <Text style={styles.buttonText}>{isLoading ? "Signing In..." : "Sign In"}</Text>
+        <TouchableOpacity style={buttonStyle} onPress={handleLogin} disabled={isLoading}>
+          <Text style={styles.buttonText}>{buttonText}</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.linkButton} onPress={() => navigation.navigate("Register")}>
+        <TouchableOpacity style={styles.linkButton} onPress={handleNavigateToRegister}>
           <Text style={styles.linkText}>Don&apos;t have an account? Sign up</Text>
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
   );
 };
-

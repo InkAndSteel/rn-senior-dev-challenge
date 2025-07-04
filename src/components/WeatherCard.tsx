@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useMemo } from "react";
 import { Text, View } from "react-native";
 import { CityWeatherData } from "src/api/weatherTypes";
 import { styles } from "src/theme";
@@ -8,12 +8,32 @@ interface WeatherCardProps {
 }
 
 export const WeatherCard: React.FC<WeatherCardProps> = ({ cityData }) => {
-  const formatTime = (timestamp: number): string => {
+  const formatTime = useCallback((timestamp: number): string => {
     return new Date(timestamp).toLocaleTimeString([], {
       hour: "2-digit",
       minute: "2-digit"
     });
-  };
+  }, []);
+
+  const formattedTime = useMemo(() => {
+    return formatTime(cityData.lastUpdated);
+  }, [formatTime, cityData.lastUpdated]);
+
+  const temperatureText = useMemo(() => {
+    return `${cityData.temperature}°C`;
+  }, [cityData.temperature]);
+
+  const feelsLikeText = useMemo(() => {
+    return `${cityData.feelsLike}°C`;
+  }, [cityData.feelsLike]);
+
+  const humidityText = useMemo(() => {
+    return `${cityData.humidity}%`;
+  }, [cityData.humidity]);
+
+  const windSpeedText = useMemo(() => {
+    return `${cityData.windSpeed} km/h`;
+  }, [cityData.windSpeed]);
 
   return (
     <View style={styles.weatherCard}>
@@ -22,7 +42,7 @@ export const WeatherCard: React.FC<WeatherCardProps> = ({ cityData }) => {
           <Text style={styles.weatherCityName}>{cityData.name}</Text>
           <Text style={styles.weatherCountry}>{cityData.country}</Text>
         </View>
-        <Text style={styles.weatherTemp}>{cityData.temperature}°C</Text>
+        <Text style={styles.weatherTemp}>{temperatureText}</Text>
       </View>
 
       <Text style={styles.weatherDescription}>{cityData.description}</Text>
@@ -30,22 +50,22 @@ export const WeatherCard: React.FC<WeatherCardProps> = ({ cityData }) => {
       <View style={styles.weatherDetails}>
         <View style={styles.weatherDetailItem}>
           <Text style={styles.weatherDetailLabel}>Feels like</Text>
-          <Text style={styles.weatherDetailValue}>{cityData.feelsLike}°C</Text>
+          <Text style={styles.weatherDetailValue}>{feelsLikeText}</Text>
         </View>
 
         <View style={styles.weatherDetailItem}>
           <Text style={styles.weatherDetailLabel}>Humidity</Text>
-          <Text style={styles.weatherDetailValue}>{cityData.humidity}%</Text>
+          <Text style={styles.weatherDetailValue}>{humidityText}</Text>
         </View>
 
         <View style={styles.weatherDetailItem}>
           <Text style={styles.weatherDetailLabel}>Wind</Text>
-          <Text style={styles.weatherDetailValue}>{cityData.windSpeed} km/h</Text>
+          <Text style={styles.weatherDetailValue}>{windSpeedText}</Text>
         </View>
 
         <View style={styles.weatherDetailItem}>
           <Text style={styles.weatherDetailLabel}>Updated</Text>
-          <Text style={styles.weatherDetailValue}>{formatTime(cityData.lastUpdated)}</Text>
+          <Text style={styles.weatherDetailValue}>{formattedTime}</Text>
         </View>
       </View>
     </View>
