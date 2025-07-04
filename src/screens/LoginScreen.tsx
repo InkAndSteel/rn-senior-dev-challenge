@@ -1,5 +1,5 @@
 import { StackNavigationProp } from "@react-navigation/stack";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Alert,
   KeyboardAvoidingView,
@@ -10,7 +10,9 @@ import {
   TouchableOpacity,
   View
 } from "react-native";
-import { AuthStackParamList } from "../types/navigation";
+import { clearError, loginUser } from "src/store/authSlice";
+import { useAppDispatch, useAppSelector } from "src/store/hooks";
+import { AuthStackParamList } from "src/types/navigation";
 
 type LoginScreenNavigationProp = StackNavigationProp<AuthStackParamList, "Login">;
 
@@ -21,14 +23,26 @@ interface Props {
 export const LoginScreen: React.FC<Props> = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const dispatch = useAppDispatch();
+  const { isLoading, error } = useAppSelector((state) => state.auth);
 
-  const handleLogin = () => {
+  useEffect(() => {
+    if (error) {
+      Alert.alert("Error", error);
+      dispatch(clearError());
+    }
+  }, [error, dispatch]);
+
+  const handleLogin = async () => {
     if (!email || !password) {
       Alert.alert("Error", "Please fill in all fields");
       return;
     }
-    // TODO: Implement actual authentication
-    console.log("Login attempted with:", { email, password });
+
+    const result = await dispatch(loginUser({ email, password }));
+    if (loginUser.fulfilled.match(result)) {
+      Alert.alert("Success", "Login successful!");
+    }
   };
 
   return (
@@ -54,8 +68,8 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
           secureTextEntry
         />
 
-        <TouchableOpacity style={styles.button} onPress={handleLogin}>
-          <Text style={styles.buttonText}>Sign In</Text>
+        <TouchableOpacity style={styles.button} onPress={handleLogin} disabled={isLoading}>
+          <Text style={styles.buttonText}>{isLoading ? "Signing In..." : "Sign In"}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.linkButton} onPress={() => navigation.navigate("Register")}>

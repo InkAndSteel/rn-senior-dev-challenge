@@ -1,17 +1,18 @@
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { logout } from "src/store/authSlice";
+import { useAppDispatch } from "src/store/hooks";
 
 export const DashboardScreen: React.FC = () => {
+  const dispatch = useAppDispatch();
+
   const handleLogout = () => {
-    console.log("Logout pressed");
+    dispatch(logout());
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>Weather Dashboard</Text>
-        <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
-          <Text style={styles.logoutText}>Logout</Text>
-        </TouchableOpacity>
       </View>
 
       <ScrollView style={styles.content}>
@@ -33,6 +34,9 @@ export const DashboardScreen: React.FC = () => {
             <Text style={styles.cardText}>Recommendations will be generated based on weather conditions.</Text>
           </View>
         </View>
+        <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+          <Text style={styles.logoutText}>Logout</Text>
+        </TouchableOpacity>
       </ScrollView>
     </View>
   );
@@ -40,6 +44,7 @@ export const DashboardScreen: React.FC = () => {
 
 const styles = StyleSheet.create({
   container: {
+    paddingTop: 40,
     flex: 1,
     backgroundColor: "#f5f5f5"
   },

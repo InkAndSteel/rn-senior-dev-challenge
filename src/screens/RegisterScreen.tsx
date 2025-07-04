@@ -1,5 +1,5 @@
 import { StackNavigationProp } from "@react-navigation/stack";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Alert,
   KeyboardAvoidingView,
@@ -10,7 +10,9 @@ import {
   TouchableOpacity,
   View
 } from "react-native";
-import { AuthStackParamList } from "../types/navigation";
+import { clearError, registerUser } from "src/store/authSlice";
+import { useAppDispatch, useAppSelector } from "src/store/hooks";
+import { AuthStackParamList } from "src/types/navigation";
 
 type RegisterScreenNavigationProp = StackNavigationProp<AuthStackParamList, "Register">;
 
@@ -22,8 +24,17 @@ export const RegisterScreen: React.FC<Props> = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const dispatch = useAppDispatch();
+  const { isLoading, error } = useAppSelector((state) => state.auth);
 
-  const handleRegister = () => {
+  useEffect(() => {
+    if (error) {
+      Alert.alert("Error", error);
+      dispatch(clearError());
+    }
+  }, [error, dispatch]);
+
+  const handleRegister = async () => {
     if (!email || !password || !confirmPassword) {
       Alert.alert("Error", "Please fill in all fields");
       return;
@@ -39,11 +50,12 @@ export const RegisterScreen: React.FC<Props> = ({ navigation }) => {
       return;
     }
 
-    // TODO: Implement actual registration
-    console.log("Registration attempted with:", { email, password });
-    Alert.alert("Success", "Account created successfully!", [
-      { text: "OK", onPress: () => navigation.navigate("Login") }
-    ]);
+    const result = await dispatch(registerUser({ email, password }));
+    if (registerUser.fulfilled.match(result)) {
+      Alert.alert("Success", "Account created successfully!", [
+        { text: "OK", onPress: () => navigation.navigate("Login") }
+      ]);
+    }
   };
 
   return (
@@ -77,8 +89,8 @@ export const RegisterScreen: React.FC<Props> = ({ navigation }) => {
           secureTextEntry
         />
 
-        <TouchableOpacity style={styles.button} onPress={handleRegister}>
-          <Text style={styles.buttonText}>Create Account</Text>
+        <TouchableOpacity style={styles.button} onPress={handleRegister} disabled={isLoading}>
+          <Text style={styles.buttonText}>{isLoading ? "Creating Account..." : "Create Account"}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.linkButton} onPress={() => navigation.navigate("Login")}>
