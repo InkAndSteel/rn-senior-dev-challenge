@@ -151,5 +151,90 @@ export const styles = {
     fontSize: typography.sizes.md,
     color: colors.text.secondary,
     textAlign: "center"
+  } as TextStyle,
+
+  weatherCard: {
+    backgroundColor: colors.surface,
+    borderRadius: borderRadius.lg,
+    padding: spacing.lg,
+    marginBottom: spacing.md,
+    ...shadows.md
+  } as ViewStyle,
+
+  weatherCardHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+    marginBottom: spacing.sm
+  } as ViewStyle,
+
+  weatherCityName: {
+    fontSize: typography.sizes.lg,
+    fontWeight: typography.weights.semibold,
+    color: colors.text.primary
+  } as TextStyle,
+
+  weatherCountry: {
+    fontSize: typography.sizes.sm,
+    color: colors.text.secondary,
+    marginTop: spacing.xs / 2
+  } as TextStyle,
+
+  weatherTemp: {
+    fontSize: typography.sizes.xxxl,
+    fontWeight: typography.weights.bold,
+    color: colors.primary
+  } as TextStyle,
+
+  weatherDescription: {
+    fontSize: typography.sizes.md,
+    color: colors.text.secondary,
+    textTransform: "capitalize",
+    marginBottom: spacing.sm
+  } as TextStyle,
+
+  weatherDetails: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingTop: spacing.sm,
+    borderTopWidth: 1,
+    borderTopColor: colors.border.light
+  } as ViewStyle,
+
+  weatherDetailItem: {
+    alignItems: "center"
+  } as ViewStyle,
+
+  weatherDetailLabel: {
+    fontSize: typography.sizes.xs,
+    color: colors.text.tertiary,
+    marginBottom: spacing.xs / 2
+  } as TextStyle,
+
+  weatherDetailValue: {
+    fontSize: typography.sizes.sm,
+    fontWeight: typography.weights.medium,
+    color: colors.text.primary
+  } as TextStyle,
+
+  weatherGrid: {
+    gap: spacing.md
+  } as ViewStyle,
+
+  loadingCard: {
+    backgroundColor: colors.surface,
+    borderRadius: borderRadius.lg,
+    padding: spacing.xl,
+    marginBottom: spacing.md,
+    alignItems: "center",
+    justifyContent: "center",
+    minHeight: 120,
+    ...shadows.md
+  } as ViewStyle,
+
+  loadingText: {
+    fontSize: typography.sizes.md,
+    color: colors.text.secondary,
+    marginTop: spacing.sm
   } as TextStyle
 };
