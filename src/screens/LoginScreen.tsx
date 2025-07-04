@@ -4,7 +4,6 @@ import {
   Alert,
   KeyboardAvoidingView,
   Platform,
-  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
@@ -12,6 +11,7 @@ import {
 } from "react-native";
 import { clearError, loginUser } from "src/store/authSlice";
 import { useAppDispatch, useAppSelector } from "src/store/hooks";
+import { styles } from "src/theme";
 import { AuthStackParamList } from "src/types/navigation";
 
 type LoginScreenNavigationProp = StackNavigationProp<AuthStackParamList, "Login">;
@@ -47,7 +47,7 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === "ios" ? "padding" : "height"}>
-      <View style={styles.content}>
+      <View style={styles.centeredContent}>
         <Text style={styles.title}>Health Environment Tracker</Text>
         <Text style={styles.subtitle}>Sign in to your account</Text>
 
@@ -68,7 +68,11 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
           secureTextEntry
         />
 
-        <TouchableOpacity style={styles.button} onPress={handleLogin} disabled={isLoading}>
+        <TouchableOpacity 
+          style={isLoading ? styles.buttonDisabled : styles.button} 
+          onPress={handleLogin} 
+          disabled={isLoading}
+        >
           <Text style={styles.buttonText}>{isLoading ? "Signing In..." : "Sign In"}</Text>
         </TouchableOpacity>
 
@@ -80,55 +84,3 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#f5f5f5"
-  },
-  content: {
-    flex: 1,
-    justifyContent: "center",
-    paddingHorizontal: 20
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    textAlign: "center",
-    marginBottom: 8,
-    color: "#333"
-  },
-  subtitle: {
-    fontSize: 16,
-    textAlign: "center",
-    marginBottom: 32,
-    color: "#666"
-  },
-  input: {
-    backgroundColor: "#fff",
-    borderWidth: 1,
-    borderColor: "#ddd",
-    borderRadius: 8,
-    padding: 16,
-    marginBottom: 16,
-    fontSize: 16
-  },
-  button: {
-    backgroundColor: "#007AFF",
-    borderRadius: 8,
-    padding: 16,
-    alignItems: "center",
-    marginBottom: 16
-  },
-  buttonText: {
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: "600"
-  },
-  linkButton: {
-    alignItems: "center"
-  },
-  linkText: {
-    color: "#007AFF",
-    fontSize: 16
-  }
-});
