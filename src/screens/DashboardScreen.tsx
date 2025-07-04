@@ -52,12 +52,6 @@ export const DashboardScreen: React.FC = () => {
     [isLoading, handleRefresh]
   );
 
-  const activityRecommendationText = useMemo(() => {
-    return Object.keys(cities).length > 0
-      ? t("dashboard.activityRecommendationsText")
-      : t("dashboard.activityRecommendationsDefault");
-  }, [cities, t]);
-
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -73,13 +67,6 @@ export const DashboardScreen: React.FC = () => {
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>{t("dashboard.currentWeather")}</Text>
           <View style={styles.weatherGrid}>{renderWeatherCards()}</View>
-        </View>
-
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>{t("dashboard.activityRecommendations")}</Text>
-          <View style={styles.card}>
-            <Text style={styles.bodyText}>{activityRecommendationText}</Text>
-          </View>
         </View>
 
         <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
